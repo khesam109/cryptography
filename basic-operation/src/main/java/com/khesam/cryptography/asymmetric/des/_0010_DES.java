@@ -1,6 +1,5 @@
-package com.khesam.cryptography.aes;
+package com.khesam.cryptography.asymmetric.des;
 
-import com.khesam.cryptography.common.AesPair;
 import org.bouncycastle.util.encoders.Hex;
 
 import javax.crypto.*;
@@ -8,10 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Scanner;
 
-public class _0010_AES_ECB {
+public class _0010_DES {
 
     private static byte[] encrypt(Cipher cipher, String plainText, Key key) {
         try {
@@ -38,29 +36,19 @@ public class _0010_AES_ECB {
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(256);
-        SecretKey secretKey = keyGenerator.generateKey();
+        KeyGenerator keygenerator = KeyGenerator.getInstance("DES");
+        SecretKey secretKey = keygenerator.generateKey();
 
-        Cipher aes_ecb = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        Cipher des_ecb = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
         System.out.print("Enter plaintext: ");
         Scanner scanner = new Scanner(System.in);
         String plainText = scanner.nextLine();
 
-        byte[] firstCipherText = encrypt(aes_ecb, plainText, secretKey);
-        byte[] secondCipherText = encrypt(aes_ecb, plainText, secretKey);
+        byte[] cipherText = encrypt(des_ecb, plainText, secretKey);
 
-        System.out.printf("First ciphertext: %s\n", Hex.toHexString(firstCipherText));
-        System.out.printf("First ciphertext length: %d\n", firstCipherText.length);
+        System.out.printf("Ciphertext: %s\n", Hex.toHexString(cipherText));
 
-        System.out.printf("Second ciphertext: %s\n", Hex.toHexString(secondCipherText));
-        System.out.printf("Second ciphertext length: %d\n", secondCipherText.length);
-
-        System.out.println("First ciphertext and second ciphertext equals? " + Arrays.equals(firstCipherText, secondCipherText));
-
-        System.out.printf("Decrypt first ciphertext: %s\n", decrypt(aes_ecb, firstCipherText, secretKey));
-        System.out.printf("Decrypt second ciphertext: %s\n", decrypt(aes_ecb, secondCipherText, secretKey));
-
+        System.out.printf("Decrypt ciphertext: %s\n", decrypt(des_ecb, cipherText, secretKey));
     }
 }
