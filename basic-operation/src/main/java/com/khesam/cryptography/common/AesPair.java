@@ -1,2 +1,8 @@
-package com.khesam.cryptography.common;public class AesPair {
+package com.khesam.cryptography.common;
+
+public record AesPair(
+        byte[] iv,
+        byte[] cipherText
+) {
+
 }

@@ -8,5 +8,16 @@
     <artifactId>basic-operation</artifactId>
     <version>1.0.0</version>
 
+    <properties>
+        <bouncycastle.version>1.78.1</bouncycastle.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
