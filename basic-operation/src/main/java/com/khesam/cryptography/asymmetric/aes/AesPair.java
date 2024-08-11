@@ -1,4 +1,4 @@
-package com.khesam.cryptography.common;
+package com.khesam.cryptography.asymmetric.aes;
 
 public record AesPair(
         byte[] iv,
