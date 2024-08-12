@@ -16,6 +16,7 @@ spring:
     init:
       schema-locations: classpath:init-schema.sql
       mode: always
+      data-locations: classpath:init-schema.sql
 
 server:
   port: 8585

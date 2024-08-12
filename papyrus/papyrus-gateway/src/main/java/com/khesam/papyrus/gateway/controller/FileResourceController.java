@@ -2,6 +2,7 @@ package com.khesam.papyrus.gateway.controller;
 
 import com.khesam.papyrus.common.client.FileInfoRestClient;
 import com.khesam.papyrus.common.dto.SaveFileInfoCommand;
+import com.khesam.papyrus.common.dto.AssignFileToSignerCommand;
 import com.khesam.papyrus.gateway.exception.StorageException;
 import com.khesam.papyrus.gateway.service.FileStorageService;
 import com.khesam.papyrus.gateway.validator.FileNameValidator;
@@ -46,9 +47,18 @@ public class FileResourceController {
                             fileName, file.getContentType(), file.getSize()
                     )
             );
+
+            return ResponseEntity.created(URI.create(fileId)).build();
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
         }
-        return ResponseEntity.created(URI.create("fileId")).build();
+    }
+
+    @PutMapping("/{file-id}:assign")
+    ResponseEntity<Void> assignFileToSigner(
+            @PathVariable("file-id") String fileId,
+            @RequestBody AssignFileToSignerCommand request
+    ) {
+        return ResponseEntity.noContent().build();
     }
 }

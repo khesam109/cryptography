@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "FILE_INFO", schema = "PDF_SIGNING")
+@Table(name = "FILE_INFO", schema = "PAPYRUS")
 public class FileInfoEntity {
 
     @Id

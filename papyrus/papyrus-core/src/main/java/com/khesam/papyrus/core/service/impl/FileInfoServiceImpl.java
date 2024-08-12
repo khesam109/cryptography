@@ -1,6 +1,5 @@
 package com.khesam.papyrus.core.service.impl;
 
-import com.khesam.papyrus.common.domain.FileInfo;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.repository.entity.FileInfoEntity;
 import com.khesam.papyrus.core.service.FileInfoService;
