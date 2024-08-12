@@ -1,6 +1,8 @@
 package com.khesam.papyrus.common.dto;
 
 public record SaveFileInfoCommand(
-        FileInfo fileInfo
+        String name,
+        String contentType,
+        long size
 ) {
 }

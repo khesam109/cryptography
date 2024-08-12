@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    show-sql: true
+  data:
+    rest:
+      basePath: /papyrus/core/api
+  datasource:
+    url: jdbc:h2:mem:test-db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      schema-locations: classpath:init-schema.sql
+      mode: always
+
+server:
+  port: 8585
+  servlet:
+    context-path: /papyrus/core/api

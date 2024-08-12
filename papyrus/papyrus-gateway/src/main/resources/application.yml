@@ -6,6 +6,10 @@ spring:
       max-file-size: 1MB
       max-request-size: 10MB
 
-
 storage:
   location: upload-dir
+
+server:
+  port: 8080
+  servlet:
+    context-path: /papyrus/gateway/api

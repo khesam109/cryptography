@@ -1,5 +1,7 @@
 package com.khesam.papyrus.gateway.controller;
 
+import com.khesam.papyrus.common.client.FileInfoRestClient;
+import com.khesam.papyrus.common.dto.SaveFileInfoCommand;
 import com.khesam.papyrus.gateway.exception.StorageException;
 import com.khesam.papyrus.gateway.service.FileStorageService;
 import com.khesam.papyrus.gateway.validator.FileNameValidator;
@@ -12,32 +14,41 @@ import java.io.IOException;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/files")
+@RequestMapping(value = "/files"/*, produces = "application/vnd.api.v1+json"*/)
 public class FileResourceController {
 
     private final FileNameValidator fileNameValidator;
     private final FileStorageService fileStorageService;
+    private final FileInfoRestClient fileInfoRestClient;
 
     @Autowired
     public FileResourceController(
             FileNameValidator fileNameValidator,
-            FileStorageService fileStorageService
+            FileStorageService fileStorageService,
+            FileInfoRestClient fileInfoRestClient
     ) {
         this.fileNameValidator = fileNameValidator;
         this.fileStorageService = fileStorageService;
+        this.fileInfoRestClient = fileInfoRestClient;
     }
 
     @PostMapping
-    public ResponseEntity<Void> postFile(
+    ResponseEntity<Void> postFile(
             @RequestPart("file") MultipartFile file,
             @RequestParam("file-name") String fileName
     ) {
         fileNameValidator.validate(fileName);
         try {
             fileStorageService.store(fileName, file.getInputStream());
+
+            String fileId = fileInfoRestClient.createFileInfo(
+                    new SaveFileInfoCommand(
+                            fileName, file.getContentType(), file.getSize()
+                    )
+            );
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
         }
-        return ResponseEntity.created(URI.create("salam")).build();
+        return ResponseEntity.created(URI.create("fileId")).build();
     }
 }
