@@ -6,8 +6,6 @@ public record FileInfo(
         String id,
         String name,
         String contentType,
-        long size,
-        UUID signerId
-
+        long size
 ) {
 }

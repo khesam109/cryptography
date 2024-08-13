@@ -1,8 +1,11 @@
 package com.khesam.papyrus.gateway.service;
 
+import org.springframework.core.io.Resource;
+
 import java.io.InputStream;
 
-public interface FileStorageService {
+public interface StorageService {
 
     void store(String filename, InputStream inputStream);
+    Resource loadAsResource(String filename);
 }
