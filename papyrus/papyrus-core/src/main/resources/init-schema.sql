@@ -20,6 +20,6 @@ CREATE TABLE PAPYRUS.SIGNER (
 CREATE TABLE PAPYRUS.FILE_INFO_SIGNER (
     FILE_ID varchar(255) not null,
     SIGNER_ID int not null,
-    id int not null,
+    id varchar(255) not null,
     primary key (id)
 );

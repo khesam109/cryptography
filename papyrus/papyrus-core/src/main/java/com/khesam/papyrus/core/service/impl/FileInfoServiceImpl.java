@@ -1,6 +1,7 @@
 package com.khesam.papyrus.core.service.impl;
 
 import com.khesam.papyrus.core.repository.FileInfoRepository;
+import com.khesam.papyrus.core.repository.FileInfoSignerRepository;
 import com.khesam.papyrus.core.repository.entity.FileInfoEntity;
 import com.khesam.papyrus.core.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,15 @@ import java.util.UUID;
 public class FileInfoServiceImpl implements FileInfoService {
 
     private final FileInfoRepository fileInfoRepository;
+    private final FileInfoSignerRepository fileInfoSignerRepository;
 
     @Autowired
-    public FileInfoServiceImpl(FileInfoRepository fileInfoRepository) {
+    public FileInfoServiceImpl(
+            FileInfoRepository fileInfoRepository,
+            FileInfoSignerRepository fileInfoSignerRepository
+    ) {
         this.fileInfoRepository = fileInfoRepository;
+        this.fileInfoSignerRepository = fileInfoSignerRepository;
     }
 
     @Override

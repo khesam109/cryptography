@@ -15,15 +15,15 @@ import java.io.IOException;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/files"/*, produces = "application/vnd.api.v1+json"*/)
-public class FileResourceController {
+@RequestMapping(value = "/files", produces = "application/vnd.api.v1+json")
+public class FileResourceProxyController {
 
     private final FileNameValidator fileNameValidator;
     private final FileStorageService fileStorageService;
     private final FileInfoRestClient fileInfoRestClient;
 
     @Autowired
-    public FileResourceController(
+    public FileResourceProxyController(
             FileNameValidator fileNameValidator,
             FileStorageService fileStorageService,
             FileInfoRestClient fileInfoRestClient
@@ -54,11 +54,12 @@ public class FileResourceController {
         }
     }
 
-    @PutMapping("/{file-id}:assign")
+    @PutMapping("/{file-id}/assign")
     ResponseEntity<Void> assignFileToSigner(
             @PathVariable("file-id") String fileId,
             @RequestBody AssignFileToSignerCommand request
     ) {
+        fileInfoRestClient.assignFileToSigner(fileId, request);
         return ResponseEntity.noContent().build();
     }
 }

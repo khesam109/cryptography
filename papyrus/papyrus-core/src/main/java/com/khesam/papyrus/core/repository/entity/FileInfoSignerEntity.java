@@ -11,7 +11,7 @@ public class FileInfoSignerEntity {
 
     @Id
     @Column(name = "ID")
-    private int id;
+    private String id;
 
     @Column(name = "FILE_ID")
     private String fileId;
@@ -19,11 +19,11 @@ public class FileInfoSignerEntity {
     @Column(name = "SIGNER_ID")
     private int singerId;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
