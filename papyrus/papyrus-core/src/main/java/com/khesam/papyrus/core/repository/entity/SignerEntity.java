@@ -19,6 +19,9 @@ public class SignerEntity {
     @Column(name = "WET_SIGNATURE_PATH")
     private String wetSignaturePath;
 
+    @Column(name = "CERTIFICATE_PATH")
+    private String certificatePath;
+
     public int getId() {
         return id;
     }
@@ -41,5 +44,13 @@ public class SignerEntity {
 
     public void setWetSignaturePath(String wetSignaturePath) {
         this.wetSignaturePath = wetSignaturePath;
+    }
+
+    public String getCertificatePath() {
+        return certificatePath;
+    }
+
+    public void setCertificatePath(String certificatePath) {
+        this.certificatePath = certificatePath;
     }
 }

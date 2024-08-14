@@ -1,32 +1,32 @@
-package com.khesam.papyrus.gateway.controller;
+package com.khesam.papyrus.core.controller;
 
-import com.khesam.papyrus.common.client.SignatureRestClient;
 import com.khesam.papyrus.common.dto.GetTbsResponseData;
 import com.khesam.papyrus.common.dto.SignDocumentCommand;
+import com.khesam.papyrus.core.service.SignatureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/signature", produces = "application/vnd.api.v1+json")
-public class SignatureResourceProxyController {
+public class SignatureResourceController {
 
-    private final SignatureRestClient signatureRestClient;
+    private final SignatureService signatureService;
 
     @Autowired
-    public SignatureResourceProxyController(
-            SignatureRestClient signatureRestClient
-    ) {
-        this.signatureRestClient = signatureRestClient;
+    public SignatureResourceController(SignatureService signatureService) {
+        this.signatureService = signatureService;
     }
 
     @GetMapping("/{file-id}/tbs")
     ResponseEntity<GetTbsResponseData> getPdfDigest(
             @PathVariable("file-id") String fileId
     ) {
-
         return ResponseEntity.ok(
-                signatureRestClient.getPdfDigest(fileId)
+                new GetTbsResponseData(
+                        signatureService.getFileDigest(fileId),
+                        "SHA256WithRSA"
+                )
         );
     }
 
@@ -35,7 +35,7 @@ public class SignatureResourceProxyController {
             @PathVariable("file-id") String fileId,
             @RequestBody SignDocumentCommand request
     ) {
-        signatureRestClient.createSignedDocument(fileId, request);
+        signatureService.addSignatureToFile(fileId, request.encodedSignature());
 
         return ResponseEntity.noContent().build();
     }

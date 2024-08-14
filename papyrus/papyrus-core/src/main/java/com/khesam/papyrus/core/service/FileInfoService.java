@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface FileInfoService {
 
-    UUID saveFileInfo(String fileName, String contentType, long size);
+    UUID saveFileInfo(String fileName, String contentType, long size, String path);
     List<FileInfoEntity> getAllFilesInfo();
     FileInfoEntity getFileInfo(UUID id);
 }

@@ -6,6 +6,6 @@ import java.io.InputStream;
 
 public interface StorageService {
 
-    void store(String filename, InputStream inputStream);
+    String store(String filename, InputStream inputStream);
     Resource loadAsResource(String filename);
 }

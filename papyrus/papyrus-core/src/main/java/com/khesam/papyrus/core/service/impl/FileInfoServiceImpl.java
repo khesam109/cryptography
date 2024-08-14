@@ -26,13 +26,14 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
     @Override
-    public UUID saveFileInfo(String fileName, String contentType, long size) {
+    public UUID saveFileInfo(String fileName, String contentType, long size, String path) {
         UUID id = UUID.randomUUID();
         FileInfoEntity fileInfoEntity = new FileInfoEntity();
         fileInfoEntity.setId(id.toString());
         fileInfoEntity.setName(fileName);
         fileInfoEntity.setContentType(contentType);
         fileInfoEntity.setSize(size);
+        fileInfoEntity.setPath(path);
 
         fileInfoRepository.save(fileInfoEntity);
 

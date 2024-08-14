@@ -33,7 +33,7 @@ public class LocalStorageService implements StorageService {
     }
 
     @Override
-    public void store(String filename, InputStream inputStream) {
+    public String store(String filename, InputStream inputStream) {
         Path destinationFile = this.rootLocation.resolve(
                 Paths.get(filename)
         ).normalize().toAbsolutePath();
@@ -48,6 +48,8 @@ public class LocalStorageService implements StorageService {
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
         }
+
+        return destinationFile.toString();
     }
 
     @Override

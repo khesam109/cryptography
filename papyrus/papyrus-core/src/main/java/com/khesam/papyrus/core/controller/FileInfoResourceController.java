@@ -4,7 +4,6 @@ import com.khesam.papyrus.common.domain.FileInfo;
 import com.khesam.papyrus.common.dto.AssignFileToSignerCommand;
 import com.khesam.papyrus.common.dto.SaveFileInfoCommand;
 import com.khesam.papyrus.core.converter.FileInfoConverter;
-import com.khesam.papyrus.core.repository.entity.FileInfoEntity;
 import com.khesam.papyrus.core.service.FileAssignmentService;
 import com.khesam.papyrus.core.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,8 @@ public class FileInfoResourceController {
         UUID id = fileInfoService.saveFileInfo(
                 command.name(),
                 command.contentType(),
-                command.size()
+                command.size(),
+                command.path()
         );
 
         return ResponseEntity.ok(

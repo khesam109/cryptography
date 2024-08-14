@@ -8,7 +8,6 @@ import com.khesam.papyrus.gateway.exception.StorageException;
 import com.khesam.papyrus.gateway.service.StorageService;
 import com.khesam.papyrus.gateway.validator.FileNameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -46,11 +45,11 @@ public class FileResourceProxyController {
     ) {
         fileNameValidator.validate(fileName);
         try {
-            storageService.store(fileName, file.getInputStream());
+            String path = storageService.store(fileName, file.getInputStream());
 
             String fileId = fileInfoRestClient.createFileInfo(
                     new SaveFileInfoCommand(
-                            fileName, file.getContentType(), file.getSize()
+                            fileName, file.getContentType(), file.getSize(), path
                     )
             );
 

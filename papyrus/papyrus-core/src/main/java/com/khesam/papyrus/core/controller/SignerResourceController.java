@@ -1,6 +1,6 @@
 package com.khesam.papyrus.core.controller;
 
-import com.khesam.papyrus.core.repository.SingerRepository;
+import com.khesam.papyrus.core.repository.SignerRepository;
 import com.khesam.papyrus.core.repository.entity.SignerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +14,17 @@ import java.util.List;
 @RequestMapping(value = "/signers", produces = "application/vnd.api.v1+json")
 public class SignerResourceController {
 
-    private final SingerRepository singerRepository;
+    private final SignerRepository signerRepository;
 
     @Autowired
-    public SignerResourceController(SingerRepository singerRepository) {
-        this.singerRepository = singerRepository;
+    public SignerResourceController(SignerRepository signerRepository) {
+        this.signerRepository = signerRepository;
     }
 
     @GetMapping
     ResponseEntity<List<SignerEntity>> getSigners() {
         return ResponseEntity.ok(
-                singerRepository.findAll()
+                signerRepository.findAll()
         );
     }
 }

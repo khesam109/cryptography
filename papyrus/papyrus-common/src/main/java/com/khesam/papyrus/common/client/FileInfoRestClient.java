@@ -18,7 +18,7 @@ public interface FileInfoRestClient {
             @RequestBody SaveFileInfoCommand command
     );
 
-    @GetExchange
+    @GetExchange("/files-info")
     List<FileInfo> getAllFilesInfo();
 
     @GetExchange("/files-info/{file-id}")

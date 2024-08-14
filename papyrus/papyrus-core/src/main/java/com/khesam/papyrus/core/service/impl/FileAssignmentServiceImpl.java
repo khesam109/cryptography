@@ -2,30 +2,29 @@ package com.khesam.papyrus.core.service.impl;
 
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.repository.FileInfoSignerRepository;
-import com.khesam.papyrus.core.repository.SingerRepository;
+import com.khesam.papyrus.core.repository.SignerRepository;
 import com.khesam.papyrus.core.repository.entity.FileInfoSignerEntity;
 import com.khesam.papyrus.core.service.FileAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class FileAssignmentServiceImpl implements FileAssignmentService {
 
     private final FileInfoRepository fileInfoRepository;
-    private final SingerRepository singerRepository;
+    private final SignerRepository signerRepository;
     private final FileInfoSignerRepository fileInfoSignerRepository;
 
     @Autowired
     public FileAssignmentServiceImpl(
             FileInfoRepository fileInfoRepository,
-            SingerRepository singerRepository,
+            SignerRepository signerRepository,
             FileInfoSignerRepository fileInfoSignerRepository
     ) {
         this.fileInfoRepository = fileInfoRepository;
-        this.singerRepository = singerRepository;
+        this.signerRepository = signerRepository;
         this.fileInfoSignerRepository = fileInfoSignerRepository;
     }
 
@@ -35,7 +34,7 @@ public class FileAssignmentServiceImpl implements FileAssignmentService {
             throw new IllegalArgumentException("provided fileId is not exist");
         }
 
-        if (!singerRepository.existsById(signerId)) {
+        if (!signerRepository.existsById(signerId)) {
             throw new IllegalArgumentException("provided signerId is not exist");
         }
 

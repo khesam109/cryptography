@@ -16,6 +16,8 @@ public class PdfFileNameValidator implements FileNameValidator {
             throw new IllegalArgumentException("File extension is not PDF");
         }
 
+        //TODO: other validation
+
         if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
             throw new IllegalArgumentException("File name contains invalid characters");
         }

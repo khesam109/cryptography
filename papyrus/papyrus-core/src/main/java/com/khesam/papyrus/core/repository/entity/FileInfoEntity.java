@@ -21,6 +21,9 @@ public class FileInfoEntity {
     @Column(name = "SIZE")
     private long size;
 
+    @Column(name = "PATH")
+    private String path;
+
     public String getId() {
         return id;
     }
@@ -51,5 +54,13 @@ public class FileInfoEntity {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
