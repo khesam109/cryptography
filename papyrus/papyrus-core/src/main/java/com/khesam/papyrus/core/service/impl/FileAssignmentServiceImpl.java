@@ -1,5 +1,6 @@
 package com.khesam.papyrus.core.service.impl;
 
+import com.khesam.papyrus.core.exception.NotFoundException;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.repository.FileInfoSignerRepository;
 import com.khesam.papyrus.core.repository.SignerRepository;
@@ -31,7 +32,7 @@ public class FileAssignmentServiceImpl implements FileAssignmentService {
     @Override
     public void assignFileToSigner(String fileId, int signerId) {
         if (!fileInfoRepository.existsById(fileId)) {
-            throw new IllegalArgumentException("provided fileId is not exist");
+            throw new NotFoundException("provided fileId is not exist");
         }
 
         if (!signerRepository.existsById(signerId)) {

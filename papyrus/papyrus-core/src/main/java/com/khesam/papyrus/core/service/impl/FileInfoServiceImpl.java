@@ -1,7 +1,7 @@
 package com.khesam.papyrus.core.service.impl;
 
+import com.khesam.papyrus.core.exception.NotFoundException;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
-import com.khesam.papyrus.core.repository.FileInfoSignerRepository;
 import com.khesam.papyrus.core.repository.entity.FileInfoEntity;
 import com.khesam.papyrus.core.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +14,12 @@ import java.util.UUID;
 public class FileInfoServiceImpl implements FileInfoService {
 
     private final FileInfoRepository fileInfoRepository;
-    private final FileInfoSignerRepository fileInfoSignerRepository;
 
     @Autowired
     public FileInfoServiceImpl(
-            FileInfoRepository fileInfoRepository,
-            FileInfoSignerRepository fileInfoSignerRepository
+            FileInfoRepository fileInfoRepository
     ) {
         this.fileInfoRepository = fileInfoRepository;
-        this.fileInfoSignerRepository = fileInfoSignerRepository;
     }
 
     @Override
@@ -47,6 +44,8 @@ public class FileInfoServiceImpl implements FileInfoService {
 
     @Override
     public FileInfoEntity getFileInfo(UUID id) {
-        return fileInfoRepository.findById(id.toString()).orElseThrow();
+        return fileInfoRepository.findById(id.toString()).orElseThrow(
+                () -> new NotFoundException("No file found with id: " + id)
+        );
     }
 }

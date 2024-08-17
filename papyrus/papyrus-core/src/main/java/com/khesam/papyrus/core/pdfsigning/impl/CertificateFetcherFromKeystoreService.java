@@ -9,14 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 class CertificateFetcherFromKeystoreService implements CertificateFetcherService {
@@ -40,11 +43,30 @@ class CertificateFetcherFromKeystoreService implements CertificateFetcherService
 
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
-            keyStore.load(Files.newInputStream(Paths.get(signerEntity.getCertificatePath())), "salamsalam".toCharArray());
-            String alias = keyStore.aliases().nextElement();
-            return new Certificate[]{keyStore.getCertificate(alias)};
+            keyStore.load(getClass().getClassLoader().getResourceAsStream(signerEntity.getCertificatePath()), "salamsalam".toCharArray());
+
+            List<Certificate> certificates = new ArrayList<>();
+            Enumeration<String> enumeration = keyStore.aliases();
+            while(enumeration.hasMoreElements()) {
+                certificates.add(
+                        keyStore.getCertificate(
+                                enumeration.nextElement()
+                        )
+                );
+            }
+
+            return getOrderedChain(certificates).toArray(new Certificate[0]);
         } catch (KeyStoreException | CertificateException | IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    //At the moment just reverse the list, but can be more intelligent
+    private List<Certificate> getOrderedChain(List<Certificate> certificates) {
+        final int last = certificates.size() - 1;
+        return IntStream.rangeClosed(0, last)
+                .map(i -> (last - i))
+                .mapToObj(certificates::get)
+                .collect(Collectors.toList());
     }
 }

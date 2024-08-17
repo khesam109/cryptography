@@ -5,10 +5,10 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.khesam.papyrus.gateway.config.StorageProperties;
 import com.khesam.papyrus.gateway.exception.StorageException;
 import com.khesam.papyrus.gateway.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,10 @@ public class LocalStorageService implements StorageService {
     private final Path rootLocation;
 
     @Autowired
-    public LocalStorageService(StorageProperties storageProperties) {
-        if (storageProperties.location().trim().isEmpty()) {
-            throw new StorageException("File upload location can not be Empty.");
-        }
-
-        this.rootLocation = Paths.get(storageProperties.location());
+    public LocalStorageService(
+            @Qualifier("file-storage-root-location") Path rootLocation
+    ) {
+        this.rootLocation = rootLocation;
     }
 
     @Override
