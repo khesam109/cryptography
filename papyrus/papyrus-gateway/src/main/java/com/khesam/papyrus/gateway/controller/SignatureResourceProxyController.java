@@ -3,6 +3,7 @@ package com.khesam.papyrus.gateway.controller;
 import com.khesam.papyrus.common.client.SignatureRestClient;
 import com.khesam.papyrus.common.dto.GetTbsResponseData;
 import com.khesam.papyrus.common.dto.SignDocumentCommand;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class SignatureResourceProxyController {
     @PostMapping("/{file-id}/signature")
     ResponseEntity<Void> createSignedDocument(
             @PathVariable("file-id") String fileId,
-            @RequestBody SignDocumentCommand request
+            @RequestBody @Valid SignDocumentCommand request
     ) {
         signatureRestClient.createSignedDocument(fileId, request);
 

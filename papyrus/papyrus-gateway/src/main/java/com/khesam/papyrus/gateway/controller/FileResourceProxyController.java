@@ -7,6 +7,7 @@ import com.khesam.papyrus.common.dto.AssignFileToSignerCommand;
 import com.khesam.papyrus.gateway.exception.StorageException;
 import com.khesam.papyrus.gateway.service.StorageService;
 import com.khesam.papyrus.gateway.validator.FileNameValidator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -53,7 +54,9 @@ public class FileResourceProxyController {
                     )
             );
 
-            return ResponseEntity.created(URI.create(fileId)).build();
+            return ResponseEntity.created(
+                    URI.create("/papyrus/gateway/api/files/" + fileId)
+            ).build();
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
         }
@@ -83,7 +86,7 @@ public class FileResourceProxyController {
     @PutMapping("/{file-id}/assign")
     ResponseEntity<Void> assignFileToSigner(
             @PathVariable("file-id") String fileId,
-            @RequestBody AssignFileToSignerCommand request
+            @RequestBody @Valid AssignFileToSignerCommand request
     ) {
         fileInfoRestClient.assignFileToSigner(fileId, request);
         return ResponseEntity.noContent().build();
