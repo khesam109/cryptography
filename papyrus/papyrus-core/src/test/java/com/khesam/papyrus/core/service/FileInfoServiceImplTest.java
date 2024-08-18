@@ -25,7 +25,7 @@ public class FileInfoServiceImplTest {
     private FileInfoRepository fileInfoRepository;
 
     @InjectMocks
-    private FileInfoService fileInfoService = new FileInfoServiceImpl(fileInfoRepository);
+    private FileInfoServiceImpl fileInfoService;
 
     @Test
     void testGetFileInfoWhenIdIsNotExist() {

@@ -36,7 +36,7 @@ public class FileAssignmentServiceImpl implements FileAssignmentService {
         }
 
         if (!signerRepository.existsById(signerId)) {
-            throw new IllegalArgumentException("provided signerId is not exist");
+            throw new NotFoundException("provided signerId is not exist");
         }
 
         FileInfoSignerEntity fileInfoSignerEntity = new FileInfoSignerEntity();
@@ -50,7 +50,7 @@ public class FileAssignmentServiceImpl implements FileAssignmentService {
     @Override
     public int getFileSignerId(String fileId) {
         if (!fileInfoRepository.existsById(fileId)) {
-            throw new IllegalArgumentException("provided fileId is not exist");
+            throw new NotFoundException("provided fileId is not exist");
         }
         return fileInfoSignerRepository
                 .findByFileId(fileId)

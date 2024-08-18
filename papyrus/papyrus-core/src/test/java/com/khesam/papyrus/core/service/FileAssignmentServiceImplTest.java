@@ -1,5 +1,6 @@
 package com.khesam.papyrus.core.service;
 
+import com.khesam.papyrus.core.exception.NotFoundException;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.repository.FileInfoSignerRepository;
 import com.khesam.papyrus.core.repository.SignerRepository;
@@ -10,6 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -21,16 +27,52 @@ public class FileAssignmentServiceImplTest {
     @Mock private FileInfoSignerRepository fileInfoSignerRepository;
 
     @InjectMocks
-    private FileAssignmentService fileAssignmentService = new FileAssignmentServiceImpl(
-            fileInfoRepository,
-            signerRepository,
-            fileInfoSignerRepository
-    );
+    private FileAssignmentServiceImpl fileAssignmentService;
 
     @Test
-    void test() {
+    void testFileAssignmentWhenFileInfoIdIsNotExist() {
         when(fileInfoRepository.existsById(any())).thenReturn(false);
 
-        when(fileAssignmentService.getFileSignerId())
+        RuntimeException exception = assertThrows(
+                NotFoundException.class,
+                () -> fileAssignmentService.assignFileToSigner(UUID.randomUUID().toString(), 1)
+        );
+
+        assertEquals("provided fileId is not exist", exception.getMessage());
+    }
+
+    @Test
+    void testFileAssignmentWhenSignerIdIsNotExist() {
+        when(fileInfoRepository.existsById(any())).thenReturn(true);
+        when(signerRepository.existsById(any())).thenReturn(false);
+
+        RuntimeException exception = assertThrows(
+                NotFoundException.class,
+                () -> fileAssignmentService.assignFileToSigner(UUID.randomUUID().toString(), 1)
+        );
+
+        assertEquals("provided signerId is not exist", exception.getMessage());
+    }
+
+    @Test
+    void testGetFileSignersWhenFileInfoIdIsNotExist() {
+        when(fileInfoRepository.existsById(any())).thenReturn(false);
+
+        RuntimeException exception = assertThrows(
+                NotFoundException.class,
+                () -> fileAssignmentService.getFileSignerId(UUID.randomUUID().toString())
+        );
+
+        assertEquals("provided fileId is not exist", exception.getMessage());
+    }
+
+    @Test
+    void testGetFileSignersWhenAssignmentNotOccurred() {
+        when(fileInfoRepository.existsById(any())).thenReturn(true);
+        when(fileInfoSignerRepository.findByFileId(any())).thenReturn(Optional.empty());
+
+        assertEquals(-1, fileAssignmentService.getFileSignerId(
+                UUID.randomUUID().toString())
+        );
     }
 }
