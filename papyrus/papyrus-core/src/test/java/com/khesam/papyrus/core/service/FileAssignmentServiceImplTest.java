@@ -1,6 +1,6 @@
 package com.khesam.papyrus.core.service;
 
-import com.khesam.papyrus.core.exception.NotFoundException;
+import com.khesam.papyrus.common.exception.ResourceNotFoundException;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.repository.FileInfoSignerRepository;
 import com.khesam.papyrus.core.repository.SignerRepository;
@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class FileAssignmentServiceImplTest {
+class FileAssignmentServiceImplTest {
 
     @Mock private FileInfoRepository fileInfoRepository;
     @Mock private SignerRepository signerRepository;
@@ -34,7 +34,7 @@ public class FileAssignmentServiceImplTest {
         when(fileInfoRepository.existsById(any())).thenReturn(false);
 
         RuntimeException exception = assertThrows(
-                NotFoundException.class,
+                ResourceNotFoundException.class,
                 () -> fileAssignmentService.assignFileToSigner(UUID.randomUUID().toString(), 1)
         );
 
@@ -47,7 +47,7 @@ public class FileAssignmentServiceImplTest {
         when(signerRepository.existsById(any())).thenReturn(false);
 
         RuntimeException exception = assertThrows(
-                NotFoundException.class,
+                ResourceNotFoundException.class,
                 () -> fileAssignmentService.assignFileToSigner(UUID.randomUUID().toString(), 1)
         );
 
@@ -59,7 +59,7 @@ public class FileAssignmentServiceImplTest {
         when(fileInfoRepository.existsById(any())).thenReturn(false);
 
         RuntimeException exception = assertThrows(
-                NotFoundException.class,
+                ResourceNotFoundException.class,
                 () -> fileAssignmentService.getFileSignerId(UUID.randomUUID().toString())
         );
 

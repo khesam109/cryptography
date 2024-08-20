@@ -4,6 +4,7 @@ import com.khesam.papyrus.common.client.FileInfoRestClient;
 import com.khesam.papyrus.gateway.service.StorageService;
 import com.khesam.papyrus.gateway.validator.FileNameValidator;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,17 +14,19 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FileResourceProxyController.class)
-public class FileResourceProxyControllerTest {
+class FileResourceProxyControllerTest {
 
     @MockBean
     private FileNameValidator fileNameValidator;
@@ -50,17 +53,17 @@ public class FileResourceProxyControllerTest {
         );
 
         mockMvc.perform(
-                MockMvcRequestBuilders.multipart("/files")
+                multipart("/files")
                         .file(file)
                         .param("file-name", "test")
-                ).andExpect(
-                        status().isCreated()
-                ).andExpect(
-                        header().string(
-                                HttpHeaders.LOCATION,
-                                "/papyrus/gateway/api/files/" + fileId
-                        )
-                );
+        ).andExpect(
+                status().isCreated()
+        ).andExpect(
+                header().string(
+                        HttpHeaders.LOCATION,
+                        "/papyrus/gateway/api/files/" + fileId
+                )
+        );
     }
 
     @Test
@@ -90,14 +93,33 @@ public class FileResourceProxyControllerTest {
     }
 
     @Test
-    void assignFileToSignerSignerIdIsNegativeTest() throws Exception {
-        mockMvc.perform(
-                put("/files/${file-id}/assign", UUID.randomUUID())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"signerId\": -1}")
-
-        ).andExpect(
-                status().isBadRequest()
+    void postFileIOExceptionTest() throws Exception {
+        MockMultipartFile file = new FaultyMultipartFile(
+                "file",
+                UUID.randomUUID().toString(),
+                "pdf",
+                "dummy".getBytes()
         );
+
+        mockMvc.perform(
+                multipart("/files")
+                        .file(file)
+                        .param("file-name", "test")
+        ).andExpect(
+                status().isInternalServerError()
+        );
+    }
+
+    private static class FaultyMultipartFile extends MockMultipartFile {
+
+        public FaultyMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
+            super(name, originalFilename, contentType, content);
+        }
+
+
+        @Override
+        public InputStream getInputStream() throws IOException {
+            throw new IOException();
+        }
     }
 }

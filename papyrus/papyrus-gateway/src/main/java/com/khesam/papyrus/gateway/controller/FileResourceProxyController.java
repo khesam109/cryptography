@@ -58,7 +58,7 @@ public class FileResourceProxyController {
                     URI.create("/papyrus/gateway/api/files/" + fileId)
             ).build();
         } catch (IOException e) {
-            throw new StorageException("Failed to store file.", e);
+            throw new StorageException.IOStorageException("Failed to store file.", e);
         }
     }
 

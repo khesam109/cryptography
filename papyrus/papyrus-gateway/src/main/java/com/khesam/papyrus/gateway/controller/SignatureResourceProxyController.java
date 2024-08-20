@@ -25,7 +25,6 @@ public class SignatureResourceProxyController {
     ResponseEntity<GetTbsResponseData> getPdfDigest(
             @PathVariable("file-id") String fileId
     ) {
-
         return ResponseEntity.ok(
                 signatureRestClient.getPdfDigest(fileId)
         );

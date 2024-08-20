@@ -18,7 +18,7 @@ public class StorageRootLocationProvider {
             StorageProperties storageProperties
     ) {
         if (storageProperties.location().trim().isEmpty()) {
-            throw new StorageException("File upload location can not be Empty.");
+            throw new StorageException.EmptyRootLocationStorageException("File upload location can not be Empty.");
         }
 
         return Paths.get(storageProperties.location());

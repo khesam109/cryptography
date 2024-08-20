@@ -7,6 +7,6 @@ public record AssignFileToSignerCommand(
 
         @NotNull
         @Positive
-        int signerId
+        Integer signerId
 ) {
 }

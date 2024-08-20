@@ -1,6 +1,6 @@
 package com.khesam.papyrus.core.service;
 
-import com.khesam.papyrus.core.exception.NotFoundException;
+import com.khesam.papyrus.common.exception.ResourceNotFoundException;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.service.impl.FileInfoServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class FileInfoServiceImplTest {
+class FileInfoServiceImplTest {
 
     @Mock
     private FileInfoRepository fileInfoRepository;
@@ -33,7 +33,7 @@ public class FileInfoServiceImplTest {
 
         UUID fileInfoId = UUID.randomUUID();
         RuntimeException exception = assertThrows(
-                NotFoundException.class,
+                ResourceNotFoundException.class,
                 () -> fileInfoService.getFileInfo(fileInfoId)
         );
 

@@ -1,6 +1,6 @@
 package com.khesam.papyrus.core.service.impl;
 
-import com.khesam.papyrus.core.exception.NotFoundException;
+import com.khesam.papyrus.common.exception.ResourceNotFoundException;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.repository.entity.FileInfoEntity;
 import com.khesam.papyrus.core.service.FileInfoService;
@@ -45,7 +45,7 @@ public class FileInfoServiceImpl implements FileInfoService {
     @Override
     public FileInfoEntity getFileInfo(UUID id) {
         return fileInfoRepository.findById(id.toString()).orElseThrow(
-                () -> new NotFoundException("No file found with id: " + id)
+                () -> new ResourceNotFoundException("No file found with id: " + id)
         );
     }
 }

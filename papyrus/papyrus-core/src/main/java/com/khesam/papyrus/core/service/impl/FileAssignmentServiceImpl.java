@@ -1,6 +1,6 @@
 package com.khesam.papyrus.core.service.impl;
 
-import com.khesam.papyrus.core.exception.NotFoundException;
+import com.khesam.papyrus.common.exception.ResourceNotFoundException;
 import com.khesam.papyrus.core.repository.FileInfoRepository;
 import com.khesam.papyrus.core.repository.FileInfoSignerRepository;
 import com.khesam.papyrus.core.repository.SignerRepository;
@@ -32,11 +32,11 @@ public class FileAssignmentServiceImpl implements FileAssignmentService {
     @Override
     public void assignFileToSigner(String fileId, int signerId) {
         if (!fileInfoRepository.existsById(fileId)) {
-            throw new NotFoundException("provided fileId is not exist");
+            throw new ResourceNotFoundException("provided fileId is not exist");
         }
 
         if (!signerRepository.existsById(signerId)) {
-            throw new NotFoundException("provided signerId is not exist");
+            throw new ResourceNotFoundException("provided signerId is not exist");
         }
 
         FileInfoSignerEntity fileInfoSignerEntity = new FileInfoSignerEntity();
@@ -50,7 +50,7 @@ public class FileAssignmentServiceImpl implements FileAssignmentService {
     @Override
     public int getFileSignerId(String fileId) {
         if (!fileInfoRepository.existsById(fileId)) {
-            throw new NotFoundException("provided fileId is not exist");
+            throw new ResourceNotFoundException("provided fileId is not exist");
         }
         return fileInfoSignerRepository
                 .findByFileId(fileId)

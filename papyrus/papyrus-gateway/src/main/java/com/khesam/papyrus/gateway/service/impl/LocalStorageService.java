@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import com.khesam.papyrus.common.exception.IllegalInputException;
+import com.khesam.papyrus.common.exception.ResourceNotFoundException;
 import com.khesam.papyrus.gateway.exception.StorageException;
 import com.khesam.papyrus.gateway.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +40,13 @@ public class LocalStorageService implements StorageService {
 
         if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
             // This is a security check
-            throw new StorageException("Cannot store file outside current directory.");
+            throw new IllegalInputException("Cannot store file outside current directory.");
         }
 
         try (inputStream) {
             Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new StorageException("Failed to store file.", e);
+            throw new StorageException.IOStorageException("Failed to store file.", e);
         }
 
         return destinationFile.toString();
@@ -59,11 +61,11 @@ public class LocalStorageService implements StorageService {
                 return resource;
             }
             else {
-                throw new StorageException("Could not read file: " + filename);
+                throw new ResourceNotFoundException("Could not find file: " + filename);
             }
         }
         catch (MalformedURLException e) {
-            throw new StorageException("Could not read file: " + filename, e);
+            throw new StorageException.IOStorageException("Could not read file: " + filename, e);
         }
     }
 }
