@@ -9,11 +9,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -40,7 +42,7 @@ class SignatureResourceProxyControllerTest {
         mockMvc.perform(
                 post("/signature/{file-id}/signature", UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"encodedSignature\": \"faked-encoded-signature\"}")
+                        .content("{\"encoded-signature\": \"faked-encoded-signature\"}")
         ).andExpect(
                 status().isNoContent()
         );
@@ -61,7 +63,8 @@ class SignatureResourceProxyControllerTest {
     void getPdfDigestSerializationTest() throws Exception {
         GetTbsResponseData response = new GetTbsResponseData(
                 "fake-encoded-tbs",
-                "fake-signature-algorithm"
+                "fake-signature-algorithm",
+                LocalDateTime.now()
         );
 
         when(signatureRestClient.getPdfDigest(any())).thenReturn(response);
@@ -70,6 +73,7 @@ class SignatureResourceProxyControllerTest {
                 .andExpect(jsonPath("$.encoded-tbs").isNotEmpty())
                 .andExpect(jsonPath("$.encoded-tbs").value("fake-encoded-tbs"))
                 .andExpect(jsonPath("$.signature-algorithm").isNotEmpty())
-                .andExpect(jsonPath("$.signature-algorithm").value("fake-signature-algorithm"));
+                .andExpect(jsonPath("$.signature-algorithm").value("fake-signature-algorithm"))
+                .andDo(print());
     }
 }

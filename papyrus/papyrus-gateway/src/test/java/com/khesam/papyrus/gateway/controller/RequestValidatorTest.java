@@ -7,6 +7,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +60,7 @@ class RequestValidatorTest {
 
     @Test
     void createSignedDocumentEncodedSignatureIsNullTest() {
-        SignDocumentCommand request = new SignDocumentCommand(null);
+        SignDocumentCommand request = new SignDocumentCommand(null, LocalDateTime.now());
         Set<ConstraintViolation<SignDocumentCommand>> violations = validator.validate(request);
 
         assertThat(violations).isNotEmpty();
@@ -73,7 +74,7 @@ class RequestValidatorTest {
 
     @Test
     void createSignedDocumentEncodedSignatureIsEmptyTest() {
-        SignDocumentCommand request = new SignDocumentCommand("");
+        SignDocumentCommand request = new SignDocumentCommand("", LocalDateTime.now());
         Set<ConstraintViolation<SignDocumentCommand>> violations = validator.validate(request);
 
         assertThat(violations).isNotEmpty();

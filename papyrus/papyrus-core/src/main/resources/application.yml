@@ -2,14 +2,14 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
   data:
     rest:
       basePath: /papyrus/core/api
   datasource:
-    url: jdbc:h2:mem:test-db
+    url: jdbc:h2:mem:operation-db
     driver-class-name: org.h2.Driver
-    username: sa
+    username: application-user
     password: password
   h2:
     console:

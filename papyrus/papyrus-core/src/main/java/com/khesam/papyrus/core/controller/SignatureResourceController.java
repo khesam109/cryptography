@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping(value = "/signature", produces = "application/vnd.api.v1+json")
 public class SignatureResourceController {
@@ -25,7 +27,8 @@ public class SignatureResourceController {
         return ResponseEntity.ok(
                 new GetTbsResponseData(
                         signatureService.getFileDigest(fileId),
-                        "SHA256WithRSA"
+                        "SHA256WithRSA",
+                        LocalDateTime.now()
                 )
         );
     }
