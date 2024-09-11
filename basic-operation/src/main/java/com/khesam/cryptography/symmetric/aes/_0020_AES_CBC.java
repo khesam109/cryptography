@@ -1,4 +1,4 @@
-package com.khesam.cryptography.asymmetric.aes;
+package com.khesam.cryptography.symmetric.aes;
 
 import org.bouncycastle.util.encoders.Hex;
 

@@ -52,7 +52,7 @@ class DocumentSignaturePreparationServiceImpl implements DocumentSignaturePrepar
             SignerProperties signerProperties = getSignerProperties(signerId, signatureFieldName);
 
             PadesTwoPhaseSigningHelper padesTwoPhaseSigningHelper = new PadesTwoPhaseSigningHelper();
-            padesTwoPhaseSigningHelper.setEstimatedSize(9999); //TODO: should be considered!!
+            padesTwoPhaseSigningHelper.setEstimatedSize(99999); //TODO: should be considered!!
             padesTwoPhaseSigningHelper.setTrustedCertificates(Arrays.asList(certificates));
             CMSContainer cmsContainer = padesTwoPhaseSigningHelper.createCMSContainerWithoutSignature(
                     certificates,

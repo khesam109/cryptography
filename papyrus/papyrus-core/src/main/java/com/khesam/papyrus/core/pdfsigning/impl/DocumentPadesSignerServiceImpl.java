@@ -32,8 +32,8 @@ class DocumentPadesSignerServiceImpl implements DocumentSignerService {
         // Second phase of signing.
         PadesTwoPhaseSigningHelper helper = new PadesTwoPhaseSigningHelper();
 //        helper.setTrustedCertificates(getTrustedStore());
-//        helper.setTSAClient(getTsaClient());
-//        helper.setOcspClient(getOcspClient());
+        helper.setTSAClient(new TSAClientBouncyCastle("http://timestamp.digicert.com"));
+//        helper.setOcspClient(new OcspClientBouncyCastle());
 //        helper.setCrlClient(getCrlClient());
 
         try (PdfReader reader = new PdfReader(preparedDocumentPath);
@@ -44,7 +44,7 @@ class DocumentPadesSignerServiceImpl implements DocumentSignerService {
                     signature, hashAlgorithm, signatureAlgorithm, signingParams
             );
 
-            helper.signCMSContainerWithBaselineBProfile(externalSignature, reader, outputStream, signatureFieldName, cmsContainer);
+            helper.signCMSContainerWithBaselineTProfile(externalSignature, reader, outputStream, signatureFieldName, cmsContainer);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
